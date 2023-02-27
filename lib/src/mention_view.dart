@@ -50,7 +50,7 @@ class FlutterMentions extends StatefulWidget {
     this.appendSpaceOnAdd = true,
     this.hideSuggestionList = false,
     this.onSuggestionVisibleChanged,
-    required this.suggestionListMargin,
+    this.suggestionListMargin,
   }) : super(key: key);
 
   final bool hideSuggestionList;
@@ -85,7 +85,7 @@ class FlutterMentions extends StatefulWidget {
   /// Defaults to `300.0`
   final double suggestionListHeight;
 
-  final EdgeInsetsGeometry suggestionListMargin;
+  final EdgeInsetsGeometry? suggestionListMargin;
 
   /// A Functioned which is triggered when ever the input changes
   /// but with the markup of the selected mentions
