@@ -7,6 +7,7 @@ class OptionList extends StatelessWidget {
     required this.suggestionListHeight,
     this.suggestionBuilder,
     this.suggestionListDecoration,
+    this.margin,
   });
 
   final Widget Function(Map<String, dynamic>)? suggestionBuilder;
@@ -18,11 +19,13 @@ class OptionList extends StatelessWidget {
   final double suggestionListHeight;
 
   final BoxDecoration? suggestionListDecoration;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     return data.isNotEmpty
         ? Container(
+            margin: margin,
             decoration:
                 suggestionListDecoration ?? BoxDecoration(color: Colors.white),
             constraints: BoxConstraints(
