@@ -25,7 +25,7 @@ class FlutterMentions extends StatefulWidget {
     this.autofocus = false,
     this.autocorrect = true,
     this.enableSuggestions = true,
-    this.maxLines = 1,
+    this.maxLines,
     this.minLines,
     this.expands = false,
     this.readOnly = false,
@@ -145,7 +145,7 @@ class FlutterMentions extends StatefulWidget {
   final bool enableSuggestions;
 
   /// {@macro flutter.widgets.editableText.maxLines}
-  final int maxLines;
+  final int? maxLines;
 
   /// {@macro flutter.widgets.editableText.minLines}
   final int? minLines;
@@ -452,7 +452,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
             ...widget.leading,
             Expanded(
               child: TextField(
-                maxLines: widget.maxLines,
+                maxLines: widget.expands ? null : widget.maxLines ?? 1,
                 minLines: widget.minLines,
                 maxLength: widget.maxLength,
                 focusNode: widget.focusNode,

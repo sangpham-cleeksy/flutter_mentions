@@ -36,7 +36,8 @@ class OptionList extends StatelessWidget {
               itemCount: data.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return GestureDetector(
+                return InkWell(
+                  borderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onTap(data[index]);
                   },
