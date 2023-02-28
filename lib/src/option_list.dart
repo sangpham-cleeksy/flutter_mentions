@@ -7,7 +7,7 @@ class OptionList extends StatelessWidget {
     required this.suggestionListHeight,
     this.suggestionBuilder,
     this.suggestionListDecoration,
-    this.margin,
+    this.padding,
   });
 
   final Widget Function(Map<String, dynamic>)? suggestionBuilder;
@@ -19,40 +19,42 @@ class OptionList extends StatelessWidget {
   final double suggestionListHeight;
 
   final BoxDecoration? suggestionListDecoration;
-  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     return data.isNotEmpty
-        ? Container(
-            margin: margin,
-            decoration:
-                suggestionListDecoration ?? BoxDecoration(color: Colors.white),
-            constraints: BoxConstraints(
-              maxHeight: suggestionListHeight,
-              minHeight: 0,
-            ),
-            child: ListView.builder(
-              itemCount: data.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    onTap(data[index]);
-                  },
-                  child: suggestionBuilder != null
-                      ? suggestionBuilder!(data[index])
-                      : Container(
-                          color: Colors.blue,
-                          padding: EdgeInsets.all(20.0),
-                          child: Text(
-                            data[index]['display'],
-                            style: TextStyle(fontSize: 12),
+        ? Padding(
+            padding: padding ?? EdgeInsets.zero,
+            child: Container(
+              decoration: suggestionListDecoration ??
+                  BoxDecoration(color: Colors.white),
+              constraints: BoxConstraints(
+                maxHeight: suggestionListHeight,
+                minHeight: 0,
+              ),
+              child: ListView.builder(
+                itemCount: data.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () {
+                      onTap(data[index]);
+                    },
+                    child: suggestionBuilder != null
+                        ? suggestionBuilder!(data[index])
+                        : Container(
+                            color: Colors.blue,
+                            padding: EdgeInsets.all(20.0),
+                            child: Text(
+                              data[index]['display'],
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ),
-                        ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           )
         : Container();

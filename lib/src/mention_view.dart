@@ -427,7 +427,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
           builder: (BuildContext context, bool show, Widget? child) {
             return show && !widget.hideSuggestionList
                 ? OptionList(
-                    margin: widget.suggestionListMargin,
+                    padding: widget.suggestionListMargin,
                     suggestionListHeight: widget.suggestionListHeight,
                     suggestionBuilder: list.suggestionBuilder,
                     suggestionListDecoration: widget.suggestionListDecoration,
