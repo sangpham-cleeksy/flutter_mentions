@@ -37,21 +37,23 @@ class OptionList extends StatelessWidget {
                 itemCount: data.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      onTap(data[index]);
-                    },
-                    child: suggestionBuilder != null
-                        ? suggestionBuilder!(data[index])
-                        : Container(
-                            color: Colors.blue,
-                            padding: EdgeInsets.all(20.0),
-                            child: Text(
-                              data[index]['display'],
-                              style: TextStyle(fontSize: 12),
+                  return Material(
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () {
+                        onTap(data[index]);
+                      },
+                      child: suggestionBuilder != null
+                          ? suggestionBuilder!(data[index])
+                          : Container(
+                              color: Colors.blue,
+                              padding: EdgeInsets.all(20.0),
+                              child: Text(
+                                data[index]['display'],
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
-                          ),
+                    ),
                   );
                 },
               ),
