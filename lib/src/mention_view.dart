@@ -51,7 +51,7 @@ class FlutterMentions extends StatefulWidget {
     this.hideSuggestionList = false,
     this.onSuggestionVisibleChanged,
     this.suggestionListMargin,
-    this.onHasSuggestions,
+    this.hasSuggestions,
   }) : super(key: key);
 
   final bool hideSuggestionList;
@@ -245,7 +245,7 @@ class FlutterMentions extends StatefulWidget {
   /// {@macro flutter.services.autofill.autofillHints}
   final Iterable<String>? autofillHints;
 
-  final Function(bool)? onHasSuggestions;
+  final Function(bool)? hasSuggestions;
 
   @override
   FlutterMentionsState createState() => FlutterMentionsState();
@@ -377,8 +377,8 @@ class FlutterMentionsState extends State<FlutterMentions> {
 
       widget.onSearchChanged!(str[0], str.substring(1));
     }
-    if (widget.onHasSuggestions != null && _selectedMention?.str != null) {
-      widget.onHasSuggestions!(data.isNotEmpty);
+    if (widget.hasSuggestions != null && _selectedMention?.str != null) {
+      widget.hasSuggestions!(data.isNotEmpty);
     }
   }
 
@@ -422,7 +422,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
         : widget.mentions[0];
   }
 
-  dynamic get data => mention.data.where((element) {
+  List<Map<String, dynamic>> get data => mention.data.where((element) {
         final ele = element['display'].toLowerCase();
         final str = _selectedMention!.str
             .toLowerCase()
@@ -433,7 +433,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
   @override
   Widget build(BuildContext context) {
     // Filter the list based on the selection
-
+    setListMention();
     return Container(
       child: PortalEntry(
         portalAnchor: widget.suggestionPosition == SuggestionPosition.Bottom
@@ -449,11 +449,11 @@ class FlutterMentionsState extends State<FlutterMentions> {
                 ? OptionList(
                     margin: widget.suggestionListMargin,
                     suggestionListHeight: widget.suggestionListHeight,
-                    suggestionBuilder: data.suggestionBuilder,
+                    suggestionBuilder: mention.suggestionBuilder,
                     suggestionListDecoration: widget.suggestionListDecoration,
                     data: data,
                     onTap: (value) {
-                      addMention(value, data);
+                      addMention(value, mention);
                       showSuggestions.value = false;
                     },
                   )
