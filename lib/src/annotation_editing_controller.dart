@@ -6,11 +6,10 @@ class AnnotationEditingController extends TextEditingController {
   Map<String, Annotation> _mapping;
   String? _pattern;
 
-  String? suffixMarkup;
+  String? _suffixMarkup;
 
-  void setSuffixMarkup(String? suffixMarkup) {
-    this.suffixMarkup = suffixMarkup;
-  }
+  void setSuffixMarkup(String? suffixMarkup) => _suffixMarkup = suffixMarkup;
+
   // Generate the Regex pattern for matching all the suggestions in one.
   AnnotationEditingController(this._mapping)
       : _pattern = _mapping.keys.isNotEmpty
@@ -36,9 +35,9 @@ class AnnotationEditingController extends TextEditingController {
                 return mention.markupBuilder != null
                     ? mention.markupBuilder!(
                         mention.trigger, mention.id!, mention.display!)
-                    : suffixMarkup == null
+                    : _suffixMarkup == null
                         ? '${mention.trigger}[__${mention.id}__](__${mention.display}__)'
-                        : '${mention.trigger}[__${mention.id}__](__${mention.display}__)(${suffixMarkup})';
+                        : '${mention.trigger}[__${mention.id}__](__${mention.display}__)(${_suffixMarkup})';
               } else {
                 return match[0]!;
               }
