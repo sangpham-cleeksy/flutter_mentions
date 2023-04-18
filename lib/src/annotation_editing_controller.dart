@@ -37,7 +37,7 @@ class AnnotationEditingController extends TextEditingController {
                         mention.trigger, mention.id!, mention.display!)
                     : _suffixMarkup == null
                         ? '${mention.trigger}[__${mention.id}__](__${mention.display}__)'
-                        : '${mention.trigger}[__${mention.id}__](__${mention.display}__)(${_suffixMarkup})';
+                        : '${mention.trigger}[__${mention.id}__](__${mention.display}__){__${_suffixMarkup}__}';
               } else {
                 return match[0]!;
               }
