@@ -25,6 +25,7 @@ class Mention {
     this.suggestionBuilder,
     this.disableMarkup = false,
     this.markupBuilder,
+    this.type = MentionTypeEnum.User,
   });
 
   /// A single character that will be used to trigger the suggestions.
@@ -50,8 +51,9 @@ class Mention {
   final Widget Function(Map<String, dynamic>)? suggestionBuilder;
 
   /// Allows to set custom markup for the mentioned item.
-  final String Function(String trigger, String mention, String value)?
-      markupBuilder;
+  final String Function(
+      String trigger, String mention, String value, String type)? markupBuilder;
+  MentionTypeEnum type;
 }
 
 class Annotation {
@@ -71,6 +73,6 @@ class Annotation {
   String trigger;
   bool disableMarkup;
   MentionTypeEnum type;
-  final String Function(String trigger, String mention, String value)?
-      markupBuilder;
+  final String Function(
+      String trigger, String mention, String value, String type)? markupBuilder;
 }

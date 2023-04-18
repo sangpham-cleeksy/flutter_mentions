@@ -267,6 +267,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
           display: null,
           trigger: element.trigger,
           disableMarkup: element.disableMarkup,
+          type: element.type,
           markupBuilder: element.markupBuilder,
         );
       }
@@ -279,6 +280,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
                 display: e['display'],
                 trigger: element.trigger,
                 disableMarkup: element.disableMarkup,
+                type: element.type,
                 markupBuilder: element.markupBuilder,
               )
             : Annotation(
@@ -287,6 +289,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
                 display: e['display'],
                 trigger: element.trigger,
                 disableMarkup: element.disableMarkup,
+                type: element.type,
                 markupBuilder: element.markupBuilder,
               ),
       );

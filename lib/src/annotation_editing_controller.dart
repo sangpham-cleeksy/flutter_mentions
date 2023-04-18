@@ -30,8 +30,12 @@ class AnnotationEditingController extends TextEditingController {
               if (!mention.disableMarkup) {
                 return mention.markupBuilder != null
                     ? mention.markupBuilder!(
-                        mention.trigger, mention.id!, mention.display!)
-                    : '${mention.trigger}[__${mention.id}__](__${mention.display}__){__${mention.type}__}';
+                        mention.trigger,
+                        mention.id!,
+                        mention.display!,
+                        mention.type.name,
+                      )
+                    : '${mention.trigger}[__${mention.id}__](__${mention.display}__){__${mention.type.name}__}';
               } else {
                 return match[0]!;
               }
