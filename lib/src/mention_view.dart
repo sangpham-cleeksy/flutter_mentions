@@ -278,7 +278,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
                 id: e['id'],
                 display: e['display'],
                 trigger: element.trigger,
-                type: e['type'],
+                type: e['type'] as String?,
                 disableMarkup: element.disableMarkup,
                 markupBuilder: element.markupBuilder,
               )
@@ -287,7 +287,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
                 id: e['id'],
                 display: e['display'],
                 trigger: element.trigger,
-                type: e['type'],
+                type: e['type'] as String?,
                 disableMarkup: element.disableMarkup,
                 markupBuilder: element.markupBuilder,
               ),
