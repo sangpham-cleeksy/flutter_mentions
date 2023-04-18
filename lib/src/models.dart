@@ -23,7 +23,6 @@ class Mention {
     this.suggestionBuilder,
     this.disableMarkup = false,
     this.markupBuilder,
-    
   });
 
   /// A single character that will be used to trigger the suggestions.
@@ -65,7 +64,7 @@ class Annotation {
     this.display,
     this.disableMarkup = false,
     this.markupBuilder,
-   this.type,
+    this.type,
   });
 
   TextStyle? style;
@@ -75,5 +74,6 @@ class Annotation {
   bool disableMarkup;
   String? type;
   final String Function(
-      String trigger, String mention, String value, String? type)? markupBuilder;
+          String trigger, String mention, String value, String? type)?
+      markupBuilder;
 }
