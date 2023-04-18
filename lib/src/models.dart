@@ -2,6 +2,8 @@ part of flutter_mentions;
 
 enum SuggestionPosition { Top, Bottom }
 
+enum MentionTypeEnum { AllUser, User, Checklist, Subtask }
+
 class LengthMap {
   LengthMap({
     required this.start,
@@ -60,6 +62,7 @@ class Annotation {
     this.display,
     this.disableMarkup = false,
     this.markupBuilder,
+    this.type = MentionTypeEnum.User,
   });
 
   TextStyle? style;
@@ -67,6 +70,7 @@ class Annotation {
   String? display;
   String trigger;
   bool disableMarkup;
+  MentionTypeEnum type;
   final String Function(String trigger, String mention, String value)?
       markupBuilder;
 }
