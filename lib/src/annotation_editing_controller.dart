@@ -8,7 +8,7 @@ class AnnotationEditingController extends TextEditingController {
 
   String? _suffixMarkup;
 
-  void setSuffixMarkup(String suffixMarkup) => _suffixMarkup = suffixMarkup;
+  void setSuffixMarkup({required String suffixMarkup}) => _suffixMarkup = suffixMarkup;
 
   // Generate the Regex pattern for matching all the suggestions in one.
   AnnotationEditingController(this._mapping)
@@ -18,9 +18,6 @@ class AnnotationEditingController extends TextEditingController {
 
   /// Can be used to get the markup from the controller directly.
   String get markupText {
-    if(_suffixMarkup == null) {
-      throw Exception('Suffix markup is not set. Please set it using setSuffixMarkup()');
-    }
     final someVal = _mapping.isEmpty
         ? text
         : text.splitMapJoin(
