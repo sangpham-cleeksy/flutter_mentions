@@ -8,7 +8,7 @@ class AnnotationEditingController extends TextEditingController {
 
   String? _suffixMarkup;
 
-  void setSuffixMarkup(String? suffixMarkup) => _suffixMarkup = suffixMarkup;
+  void setSuffixMarkup({String? suffixMarkup}) => _suffixMarkup = suffixMarkup;
 
   // Generate the Regex pattern for matching all the suggestions in one.
   AnnotationEditingController(this._mapping)
