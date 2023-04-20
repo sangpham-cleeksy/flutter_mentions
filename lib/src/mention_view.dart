@@ -350,18 +350,29 @@ class FlutterMentionsState extends State<FlutterMentions> {
         _pattern = widget.mentions.map((e) => e.trigger).join('|');
         final parseStr = element.str.split(RegExp(_pattern));
         //
-        if (parseStr.length != 2) return false;
-        if(widget.contentAfterTheLastTrigger!=null){
-          widget.contentAfterTheLastTrigger!(parseStr[1]);
+        if (parseStr.length == 2) {
+          if (widget.contentAfterTheLastTrigger != null) {
+            widget.contentAfterTheLastTrigger!(parseStr[1]);
+          }
+          //
+          if (widget.onShowDefaultHeader != null) {
+            widget.onShowDefaultHeader!(parseStr[0] == '' && parseStr[1] == '');
+          }
+          //
+          if (parseStr[0] != '' || parseStr[1] == '') return false;
+          return element.end == cursorPos &&
+              element.str.toLowerCase().contains(RegExp(_pattern));
+        } else {
+          if (widget.contentAfterTheLastTrigger != null) {
+            widget.contentAfterTheLastTrigger!('');
+          }
+          //
+          if (widget.onShowDefaultHeader != null) {
+            widget.onShowDefaultHeader!(false);
+          }
+      
+          return false;
         }
-        //
-        if(widget.onShowDefaultHeader != null){
-          widget.onShowDefaultHeader!(parseStr[0] == '' && parseStr[1] == '');
-        }
-        // 
-        if (parseStr[0] != '' || parseStr[1] == '') return false;
-        return element.end == cursorPos &&
-            element.str.toLowerCase().contains(RegExp(_pattern));
       });
       showSuggestions.value = val != -1;
 
