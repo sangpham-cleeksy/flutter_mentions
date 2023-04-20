@@ -32,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
   SuggestionState state = SuggestionState.None;
+  String? c = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(state.name),
+          Text('Content: $c'),
           TextButton(
             child: Text('Get Text'),
             onPressed: () {
@@ -57,6 +59,10 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(hintText: 'hello'),
               suggestionState: (_) {
                 state = _;
+                setState(() {});
+              },
+              contentAfterTheLastTrigger: (_) {
+                c = _;
                 setState(() {});
               },
               mentions: [
@@ -83,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       {
                         'id': 'asfgasga41',
-                        'display': 'markT',
+                        'display': 'Tất cả',
                         'full_name': 'Mark Twain',
                         'photo':
                             'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'

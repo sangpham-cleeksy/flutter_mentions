@@ -349,8 +349,9 @@ class FlutterMentionsState extends State<FlutterMentions> {
 
       final val = lengthMap.indexWhere((element) {
         _pattern = widget.mentions.map((e) => e.trigger).join('|');
-        final parseStr = element.str.split(RegExp(_pattern));
 
+        final parseStr = element.str.split(RegExp(_pattern));
+        // print(parseStr);
         if (element.end == cursorPos) _suggestionParam = parseStr;
         if (parseStr.length == 2) {
           if (parseStr[0] != '' || parseStr[1] == '') return false;
@@ -360,6 +361,8 @@ class FlutterMentionsState extends State<FlutterMentions> {
         return false;
       });
       showSuggestions.value = val != -1;
+
+      /// Suggestions State
       if (_suggestionParam.length == 2) {
         if (widget.contentAfterTheLastTrigger != null) {
           widget.contentAfterTheLastTrigger!(_suggestionParam[1]);
@@ -374,11 +377,24 @@ class FlutterMentionsState extends State<FlutterMentions> {
         }
         //
       } else {
-        if (widget.contentAfterTheLastTrigger != null) {
-          widget.contentAfterTheLastTrigger!('');
-        }
         widget.suggestionState!(SuggestionState.None);
       }
+
+      /// Content after the last trigger
+      int lastAtSignIndex =
+          controller!.text.substring(0, cursorPos).lastIndexOf("@");
+      if (widget.contentAfterTheLastTrigger != null) {
+        String _text = controller!.text.contains(RegExp(_pattern))
+            ? lastAtSignIndex == -1
+                ? ''
+                : controller!.text
+                    .substring(0, cursorPos)
+                    .split(RegExp('@'))
+                    .last
+            : '';
+        widget.contentAfterTheLastTrigger!(_text);
+      }
+
       if (widget.onSuggestionVisibleChanged != null) {
         widget.onSuggestionVisibleChanged!(val != -1);
       }
