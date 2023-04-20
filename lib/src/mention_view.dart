@@ -416,7 +416,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
                   .toLowerCase()
                   .replaceAll(RegExp(_pattern), '');
 
-              return ele.contains(str);
+              return str.contains(ele) || ele.contains(str);
             })
             .toList()
             .isNotEmpty) {
