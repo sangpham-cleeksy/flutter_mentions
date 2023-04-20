@@ -51,6 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           Container(
+            height: 100,
+          ),
+          Container(
             child: FlutterMentions(
               key: key,
               suggestionPosition: SuggestionPosition.Top,
@@ -65,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 c = _;
                 setState(() {});
               },
-              textCustomHeader: 'All',
               mentions: [
                 Mention(
                     trigger: '@',
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       {
                         'id': '61asasgasgsag6a',
                         'display': 'khaled',
-                        'full_name': 'DJ Khaled',
+                        'full_name': 'khaled',
                         'style': TextStyle(color: Colors.purple),
                         'photo':
                             'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'

@@ -409,7 +409,17 @@ class FlutterMentionsState extends State<FlutterMentions> {
       _selectedMention = val == -1 ? null : lengthMap[val];
 
       if (_selectedMention?.str != null) {
-        if (data.isNotEmpty) {
+        if (mention.data
+            .where((element) {
+              final ele = element['display'].toLowerCase();
+              final str = _selectedMention!.str
+                  .toLowerCase()
+                  .replaceAll(RegExp(_pattern), '');
+
+              return ele.contains(str);
+            })
+            .toList()
+            .isNotEmpty) {
           suggestionState = SuggestionState.Found;
         } else {
           suggestionState = SuggestionState.NotFound;
@@ -501,7 +511,6 @@ class FlutterMentionsState extends State<FlutterMentions> {
         portal: ValueListenableBuilder(
           valueListenable: showSuggestions,
           builder: (BuildContext context, bool show, Widget? child) {
-            print(show);
             if (isShowDefaultHeader ||
                 isShowNotFoundHeader ||
                 widget.textCustomHeader != null) {
@@ -533,9 +542,6 @@ class FlutterMentionsState extends State<FlutterMentions> {
                 },
               );
             }
-            print(suggestionState.name);
-            print(
-                '$isShowDefaultHeader ,$isShowNotFoundHeader ,${widget.textCustomHeader}');
 
             return Container();
           },
