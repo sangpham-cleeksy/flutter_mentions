@@ -370,7 +370,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
           //
           if (widget.suggestionState != null &&
               !element.str.contains(RegExp(_pattern))) {
-            widget.suggestionState!(SuggestionState.Invalid);
+            widget.suggestionState!(SuggestionState.None);
           }
           //
           if (widget.contentAfterTheLastTrigger != null) {
