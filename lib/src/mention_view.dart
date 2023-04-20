@@ -51,7 +51,7 @@ class FlutterMentions extends StatefulWidget {
     this.hideSuggestionList = false,
     this.onSuggestionVisibleChanged,
     this.suggestionListMargin,
-    this.onShowDefaultHeader,
+    this.suggestionState,
     this.contentAfterTheLastTrigger,
   }) : super(key: key);
 
@@ -246,7 +246,7 @@ class FlutterMentions extends StatefulWidget {
   /// {@macro flutter.services.autofill.autofillHints}
   final Iterable<String>? autofillHints;
 
-  final Function(bool)? onShowDefaultHeader;
+  final Function(SuggestionState)? suggestionState;
   final Function(String?)? contentAfterTheLastTrigger;
 
   @override
@@ -355,22 +355,28 @@ class FlutterMentionsState extends State<FlutterMentions> {
             widget.contentAfterTheLastTrigger!(parseStr[1]);
           }
           //
-          if (widget.onShowDefaultHeader != null) {
-            widget.onShowDefaultHeader!(parseStr[0] == '' && parseStr[1] == '');
+          if (widget.suggestionState != null) {
+            if (parseStr[0] != '') {
+              widget.suggestionState!(SuggestionState.Invalid);
+            } else if (parseStr[1] == '') {
+              widget.suggestionState!(SuggestionState.Ready);
+            }
           }
           //
           if (parseStr[0] != '' || parseStr[1] == '') return false;
           return element.end == cursorPos &&
               element.str.toLowerCase().contains(RegExp(_pattern));
         } else {
+          //
+          if (widget.suggestionState != null &&
+              !element.str.contains(RegExp(_pattern))) {
+            widget.suggestionState!(SuggestionState.Invalid);
+          }
+          //
           if (widget.contentAfterTheLastTrigger != null) {
             widget.contentAfterTheLastTrigger!('');
           }
-          //
-          if (widget.onShowDefaultHeader != null) {
-            widget.onShowDefaultHeader!(false);
-          }
-      
+
           return false;
         }
       });
@@ -383,6 +389,13 @@ class FlutterMentionsState extends State<FlutterMentions> {
       setState(() {
         _selectedMention = val == -1 ? null : lengthMap[val];
       });
+      if (_selectedMention?.str != null && widget.suggestionState != null) {
+        if (data.isNotEmpty) {
+          widget.suggestionState!(SuggestionState.Found);
+        } else {
+          widget.suggestionState!(SuggestionState.NotFound);
+        }
+      }
     }
   }
 
