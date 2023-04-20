@@ -51,7 +51,7 @@ class FlutterMentions extends StatefulWidget {
     this.hideSuggestionList = false,
     this.onSuggestionVisibleChanged,
     this.suggestionListMargin,
-    this.onShowHeader,
+    this.onShowDefaultHeader,
     this.contentAfterTheLastTrigger,
   }) : super(key: key);
 
@@ -246,7 +246,7 @@ class FlutterMentions extends StatefulWidget {
   /// {@macro flutter.services.autofill.autofillHints}
   final Iterable<String>? autofillHints;
 
-  final Function(bool)? onShowHeader;
+  final Function(bool)? onShowDefaultHeader;
   final Function(String?)? contentAfterTheLastTrigger;
 
   @override
@@ -355,8 +355,8 @@ class FlutterMentionsState extends State<FlutterMentions> {
           widget.contentAfterTheLastTrigger!(parseStr[1]);
         }
         //
-        if(widget.onShowHeader != null){
-          widget.onShowHeader!(parseStr[0] == '' && parseStr[1] == '');
+        if(widget.onShowDefaultHeader != null){
+          widget.onShowDefaultHeader!(parseStr[0] == '' && parseStr[1] == '');
         }
         // 
         if (parseStr[0] != '' || parseStr[1] == '') return false;
