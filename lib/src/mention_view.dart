@@ -51,7 +51,6 @@ class FlutterMentions extends StatefulWidget {
     this.hideSuggestionList = false,
     this.onSuggestionVisibleChanged,
     this.suggestionListMargin,
-    this.onHasSuggestions,
     this.onShowHeader,
     this.contentAfterTheLastTrigger,
   }) : super(key: key);
@@ -247,7 +246,6 @@ class FlutterMentions extends StatefulWidget {
   /// {@macro flutter.services.autofill.autofillHints}
   final Iterable<String>? autofillHints;
 
-  final Function(bool)? onHasSuggestions;
   final Function(bool)? onShowHeader;
   final Function(String?)? contentAfterTheLastTrigger;
 
@@ -390,9 +388,6 @@ class FlutterMentionsState extends State<FlutterMentions> {
       final str = _selectedMention!.str.toLowerCase();
 
       widget.onSearchChanged!(str[0], str.substring(1));
-    }
-    if (widget.onHasSuggestions != null && _selectedMention?.str != null) {
-      widget.onHasSuggestions!(data.isNotEmpty);
     }
   }
 
