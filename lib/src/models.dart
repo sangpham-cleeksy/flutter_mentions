@@ -25,6 +25,7 @@ class Mention {
     this.suggestionBuilder,
     this.disableMarkup = false,
     this.markupBuilder,
+    this.headerBuilder,
   });
 
   /// A single character that will be used to trigger the suggestions.
@@ -48,6 +49,7 @@ class Mention {
 
   /// Build Custom suggestion widget using this builder.
   final Widget Function(Map<String, dynamic>)? suggestionBuilder;
+  final Widget Function(String)? headerBuilder;
 
   /// Allows to set custom markup for the mentioned item.
   final String Function(

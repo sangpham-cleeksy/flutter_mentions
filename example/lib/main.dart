@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 c = _;
                 setState(() {});
               },
+              textCustomHeader: 'All',
               mentions: [
                 Mention(
                     trigger: '@',

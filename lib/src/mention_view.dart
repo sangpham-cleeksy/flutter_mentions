@@ -53,6 +53,9 @@ class FlutterMentions extends StatefulWidget {
     this.suggestionListMargin,
     this.suggestionState,
     this.contentAfterTheLastTrigger,
+    this.textCustomHeader,
+    this.textDefaultHeader,
+    this.textNotFoundHeader,
   }) : super(key: key);
 
   final bool hideSuggestionList;
@@ -249,6 +252,10 @@ class FlutterMentions extends StatefulWidget {
   final Function(SuggestionState)? suggestionState;
   final Function(String?)? contentAfterTheLastTrigger;
 
+  final String? textDefaultHeader;
+  final String? textNotFoundHeader;
+  final String? textCustomHeader;
+
   @override
   FlutterMentionsState createState() => FlutterMentionsState();
 }
@@ -259,6 +266,10 @@ class FlutterMentionsState extends State<FlutterMentions> {
   LengthMap? _selectedMention;
   String _pattern = '';
   late Mention mention;
+
+  SuggestionState suggestionState = SuggestionState.None;
+  bool get isShowDefaultHeader => suggestionState == SuggestionState.Ready;
+  bool get isShowNotFoundHeader => suggestionState == SuggestionState.NotFound;
 
   Map<String, Annotation> mapToAnnotation() {
     final data = <String, Annotation>{};
@@ -331,7 +342,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
   }
 
   void suggestionListener() {
-    List<String> _suggestionParam = [];
+    var _suggestionParam = <String>[];
     final cursorPos = controller!.selection.baseOffset;
 
     if (cursorPos >= 0) {
@@ -367,24 +378,20 @@ class FlutterMentionsState extends State<FlutterMentions> {
         if (widget.contentAfterTheLastTrigger != null) {
           widget.contentAfterTheLastTrigger!(_suggestionParam[1]);
         }
-        //
-        if (widget.suggestionState != null) {
-          if (_suggestionParam[0] != '') {
-            widget.suggestionState!(SuggestionState.Invalid);
-          } else if (_suggestionParam[1] == '') {
-            widget.suggestionState!(SuggestionState.Ready);
-          }
+        if (_suggestionParam[0] != '') {
+          suggestionState = SuggestionState.Invalid;
+        } else if (_suggestionParam[1] == '') {
+          suggestionState = SuggestionState.Ready;
         }
-        //
       } else {
-        widget.suggestionState!(SuggestionState.None);
+        suggestionState = SuggestionState.None;
       }
 
       /// Content after the last trigger
-      int lastAtSignIndex =
-          controller!.text.substring(0, cursorPos).lastIndexOf("@");
       if (widget.contentAfterTheLastTrigger != null) {
-        String _text = controller!.text.contains(RegExp(_pattern))
+        var lastAtSignIndex =
+            controller!.text.substring(0, cursorPos).lastIndexOf('@');
+        var _text = controller!.text.contains(RegExp(_pattern))
             ? lastAtSignIndex == -1
                 ? ''
                 : controller!.text
@@ -399,16 +406,19 @@ class FlutterMentionsState extends State<FlutterMentions> {
         widget.onSuggestionVisibleChanged!(val != -1);
       }
 
-      setState(() {
-        _selectedMention = val == -1 ? null : lengthMap[val];
-      });
-      if (_selectedMention?.str != null && widget.suggestionState != null) {
+      _selectedMention = val == -1 ? null : lengthMap[val];
+
+      if (_selectedMention?.str != null) {
         if (data.isNotEmpty) {
-          widget.suggestionState!(SuggestionState.Found);
+          suggestionState = SuggestionState.Found;
         } else {
-          widget.suggestionState!(SuggestionState.NotFound);
+          suggestionState = SuggestionState.NotFound;
         }
       }
+      setState(() {});
+    }
+    if (widget.suggestionState != null) {
+      return widget.suggestionState!(suggestionState);
     }
   }
 
@@ -491,19 +501,43 @@ class FlutterMentionsState extends State<FlutterMentions> {
         portal: ValueListenableBuilder(
           valueListenable: showSuggestions,
           builder: (BuildContext context, bool show, Widget? child) {
-            return show && !widget.hideSuggestionList
-                ? OptionList(
-                    margin: widget.suggestionListMargin,
-                    suggestionListHeight: widget.suggestionListHeight,
-                    suggestionBuilder: mention.suggestionBuilder,
-                    suggestionListDecoration: widget.suggestionListDecoration,
-                    data: data,
-                    onTap: (value) {
-                      addMention(value, mention);
-                      showSuggestions.value = false;
-                    },
-                  )
-                : Container();
+            print(show);
+            if (isShowDefaultHeader ||
+                isShowNotFoundHeader ||
+                widget.textCustomHeader != null) {
+              return OptionList(
+                  margin: widget.suggestionListMargin,
+                  suggestionListHeight: widget.suggestionListHeight,
+                  suggestionListDecoration: widget.suggestionListDecoration,
+                  data: [],
+                  headerBuilder: mention.headerBuilder,
+                  header: widget.textCustomHeader != null
+                      ? widget.textCustomHeader!
+                      : isShowDefaultHeader
+                          ? widget.textDefaultHeader ?? 'Nhắc đến thành viên'
+                          : isShowNotFoundHeader
+                              ? widget.textNotFoundHeader ??
+                                  'Không tìm thấy kết quả nào'
+                              : '');
+            }
+            if (show && !widget.hideSuggestionList) {
+              return OptionList(
+                margin: widget.suggestionListMargin,
+                suggestionListHeight: widget.suggestionListHeight,
+                suggestionBuilder: mention.suggestionBuilder,
+                suggestionListDecoration: widget.suggestionListDecoration,
+                data: data,
+                onTap: (value) {
+                  addMention(value, mention);
+                  showSuggestions.value = false;
+                },
+              );
+            }
+            print(suggestionState.name);
+            print(
+                '$isShowDefaultHeader ,$isShowNotFoundHeader ,${widget.textCustomHeader}');
+
+            return Container();
           },
         ),
         child: Row(
