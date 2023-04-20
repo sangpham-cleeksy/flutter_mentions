@@ -31,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
-
+  SuggestionState state = SuggestionState.None;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          Text(state.name),
           TextButton(
             child: Text('Get Text'),
             onPressed: () {
@@ -54,6 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
               maxLines: 5,
               minLines: 1,
               decoration: InputDecoration(hintText: 'hello'),
+              suggestionState: (_) {
+                state = _;
+                setState(() {});
+              },
               mentions: [
                 Mention(
                     trigger: '@',

@@ -331,6 +331,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
   }
 
   void suggestionListener() {
+    List<String> _suggestionParam = [];
     final cursorPos = controller!.selection.baseOffset;
 
     if (cursorPos >= 0) {
@@ -349,39 +350,35 @@ class FlutterMentionsState extends State<FlutterMentions> {
       final val = lengthMap.indexWhere((element) {
         _pattern = widget.mentions.map((e) => e.trigger).join('|');
         final parseStr = element.str.split(RegExp(_pattern));
-        //
+
+        if (element.end == cursorPos) _suggestionParam = parseStr;
         if (parseStr.length == 2) {
-          if (widget.contentAfterTheLastTrigger != null) {
-            widget.contentAfterTheLastTrigger!(parseStr[1]);
-          }
-          //
-          if (widget.suggestionState != null) {
-            if (parseStr[0] != '') {
-              widget.suggestionState!(SuggestionState.Invalid);
-            } else if (parseStr[1] == '') {
-              widget.suggestionState!(SuggestionState.Ready);
-            }
-          }
-          //
           if (parseStr[0] != '' || parseStr[1] == '') return false;
           return element.end == cursorPos &&
               element.str.toLowerCase().contains(RegExp(_pattern));
-        } else {
-          //
-          if (widget.suggestionState != null &&
-              !element.str.contains(RegExp(_pattern))) {
-            widget.suggestionState!(SuggestionState.None);
-          }
-          //
-          if (widget.contentAfterTheLastTrigger != null) {
-            widget.contentAfterTheLastTrigger!('');
-          }
-
-          return false;
         }
+        return false;
       });
       showSuggestions.value = val != -1;
-
+      if (_suggestionParam.length == 2) {
+        if (widget.contentAfterTheLastTrigger != null) {
+          widget.contentAfterTheLastTrigger!(_suggestionParam[1]);
+        }
+        //
+        if (widget.suggestionState != null) {
+          if (_suggestionParam[0] != '') {
+            widget.suggestionState!(SuggestionState.Invalid);
+          } else if (_suggestionParam[1] == '') {
+            widget.suggestionState!(SuggestionState.Ready);
+          }
+        }
+        //
+      } else {
+        if (widget.contentAfterTheLastTrigger != null) {
+          widget.contentAfterTheLastTrigger!('');
+        }
+        widget.suggestionState!(SuggestionState.None);
+      }
       if (widget.onSuggestionVisibleChanged != null) {
         widget.onSuggestionVisibleChanged!(val != -1);
       }
